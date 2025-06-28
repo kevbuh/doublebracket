@@ -1,47 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="utf-8">
+  <!-- ensure proper scaling on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>iota intellect</title>
   <style>
-    /* Set up CSS variables for light mode */
-    :root {
-      --bg-color: #ffffff;
-      --text-color: #000000;
+    /* 1. Prevent ANY scrollbars */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
     }
-    /* Override for dark mode */
+
+    /* 2. Center with flexbox */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--bg, #fff);
+      color: var(--fg, #000);
+      font-family: system-ui, sans-serif;
+      font-size: 1.2rem;          /* base font-size in rems */
+      line-height: 1.4;           /* nice readability */
+      text-align: center;         /* centered text */
+      padding: 1em;               /* some breathing room */
+    }
+
+    /* 3. Wrap long lines so no horizontal scroll */
+    #text-content {
+      max-width: 100%;            /* never wider than viewport */
+      white-space: pre-wrap;      /* preserve newlines */
+      overflow-wrap: break-word;  /* break long words/URLs */
+    }
+
+    /* Dark mode support */
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg-color: #000000;
-        --text-color: #ffffff;
+        --bg: #121212;
+        --fg: #eee;
       }
     }
 
-    /* Fill the viewport and center content */
-    html, body {
-      margin: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: system-ui, sans-serif;
-      font-size: 5rem;
-    }
-
-    /* (Optional) Respect “reduce motion” if you add animations later */
+    /* Reduced-motion for accessibility */
     @media (prefers-reduced-motion: reduce) {
       * {
-        animation: none !important;
         transition: none !important;
+        animation: none !important;
       }
     }
   </style>
 </head>
 <body>
-  <div>][</div>
+  <div id="text-content">Loading…</div>
+
+  <script>
+    // fetch and inject your .txt
+    fetch('/doublebracket.txt')
+      .then(r => r.text())
+      .then(txt => {
+        document.getElementById('text-content').textContent = txt;
+      })
+      .catch(() => {
+        document.getElementById('text-content').textContent =
+          '⚠️ Failed to load content.';
+      });
+  </script>
 </body>
 </html>
