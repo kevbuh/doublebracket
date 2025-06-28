@@ -55,17 +55,8 @@
 <body>
 <!--   <div id="text-content">Loading…</div> -->
 
-  <script>
-    // fetch and inject your .txt
-    fetch('/doublebracket.txt')
-      .then(r => r.text())
-      .then(txt => {
-        document.getElementById('text-content').textContent = txt;
-      })
-      .catch(() => {
-        document.getElementById('text-content').textContent =
-          '⚠️ Failed to load content.';
-      });
-  </script>
+  <div id="text-content">
+    ][
+  </div>
 </body>
 </html>
