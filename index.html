@@ -1,62 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <!-- ensure proper scaling on mobile -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>iota intellect</title>
   <style>
-    /* 1. Prevent ANY scrollbars */
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+    /* Set up CSS variables for light mode */
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
     }
-
-    /* 2. Center with flexbox */
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: var(--bg, #fff);
-      color: var(--fg, #000);
-      font-family: system-ui, sans-serif;
-      font-size: 1.8rem;          /* base font-size in rems */
-      line-height: 1.4;           /* nice readability */
-      text-align: center;         /* centered text */
-      padding: 1em;               /* some breathing room */
-    }
-
-    /* 3. Wrap long lines so no horizontal scroll */
-    #text-content {
-      max-width: 100%;            /* never wider than viewport */
-      white-space: pre-wrap;      /* preserve newlines */
-      overflow-wrap: break-word;  /* break long words/URLs */
-    }
-
-    /* Dark mode support */
+    /* Override for dark mode */
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #121212;
-        --fg: #eee;
+        --bg-color: #000000;
+        --text-color: #ffffff;
       }
     }
 
-    /* Reduced-motion for accessibility */
+    /* Fill the viewport and center content */
+    html, body {
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, sans-serif;
+      font-size: 5rem;
+    }
+
+    /* (Optional) Respect “reduce motion” if you add animations later */
     @media (prefers-reduced-motion: reduce) {
       * {
-        transition: none !important;
         animation: none !important;
+        transition: none !important;
       }
     }
   </style>
 </head>
 <body>
-<!--   <div id="text-content">Loading…</div> -->
-
-  <div id="text-content">
-    ][
-  </div>
+  <div>][</div>
 </body>
 </html>
