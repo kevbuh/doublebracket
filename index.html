@@ -26,7 +26,7 @@
       overflow: hidden;
     }
 
-    /* Stars container that rotates */
+    /* Stars container */
     #stars-container {
       position: fixed;
       top: 0;
@@ -34,12 +34,6 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      animation: rotateScreen 500s linear infinite;
-    }
-
-    @keyframes rotateScreen {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(-360deg); }
     }
 
     /* Twinkling stars background */
@@ -52,8 +46,8 @@
     }
 
     @keyframes twinkle {
-      0%, 100% { opacity: 0.3; transform: scale(1) rotate(0deg); }
-      50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
     }
 
     /* 3. Style the circle container */
@@ -115,10 +109,7 @@
     // Function to generate twinkling stars
     function generateStars() {
       const starsContainer = document.getElementById('stars-container');
-      // Calculate number of stars proportional to screen size
-      // Base calculation: approximately 1 star per 1000 square pixels
-      const screenArea = window.innerWidth * window.innerHeight;
-      const numStars = Math.floor(screenArea / 3000);
+      const numStars = 400;
       
       // Clear existing stars
       const existingStars = starsContainer.querySelectorAll('.star');
