@@ -97,19 +97,40 @@
   <script>
     // Function to generate twinkling stars
     function generateStars() {
-      const numStars = 100;
+      const numStars = 400;
       
       // Clear existing stars
       const existingStars = document.querySelectorAll('.star');
       existingStars.forEach(star => star.remove());
       
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+      
       for (let i = 0; i < numStars; i++) {
         const star = document.createElement('div');
         star.className = 'star';
         
-        // Random position across viewport
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * window.innerHeight;
+        // Generate position with higher density further out
+        // Use polar coordinates for better control
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * maxDistance;
+        
+        // Increase density with distance (more stars further out)
+        const densityFactor = Math.pow(distance / maxDistance, 0.5);
+        if (Math.random() > densityFactor) {
+          i--; // Try again if not dense enough
+          continue;
+        }
+        
+        const x = centerX + Math.cos(angle) * distance;
+        const y = centerY + Math.sin(angle) * distance;
+        
+        // Ensure stars stay within viewport
+        if (x < 0 || x > window.innerWidth || y < 0 || y > window.innerHeight) {
+          i--; // Try again if outside viewport
+          continue;
+        }
         
         // Random size (1-3px)
         const size = Math.random() * 2 + 1;
