@@ -19,27 +19,61 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: var(--bg, #fff);
-      color: var(--fg, #000);
+      background: var(--bg, #000);
+      color: var(--fg, #fff);
       font-family: system-ui, sans-serif;
-      font-size: 1.2rem;          /* base font-size in rems */
-      line-height: 1.4;           /* nice readability */
-      text-align: center;         /* centered text */
-      padding: 1em;               /* some breathing room */
+      position: relative;
+      overflow: hidden;
     }
 
-    /* 3. Wrap long lines so no horizontal scroll */
-    #text-content {
-      max-width: 100%;            /* never wider than viewport */
-      white-space: pre-wrap;      /* preserve newlines */
-      overflow-wrap: break-word;  /* break long words/URLs */
+    /* Twinkling stars background */
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: twinkle 2s infinite ease-in-out;
     }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* 3. Style the circle container */
+    #circle-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 4. Style the icon container */
+    #icon-container {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #icon-container img {
+      max-width: 100%;
+      height: auto;
+      width: 42px;
+      height: 42px;
+    }
+
 
     /* Dark mode support */
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #121212;
-        --fg: #eee;
+        --bg: #000;
+        --fg: #fff;
       }
     }
 
@@ -53,19 +87,71 @@
   </style>
 </head>
 <body>
-  <div id="text-content">Loading…</div>
+  <div id="circle-container">
+    <div id="icon-container">
+      <img id="light-icon" src="ichar.svg" alt="iota intellect" style="display: none;">
+      <img id="dark-icon" src="ichar_white.svg" alt="iota intellect" style="display: none;">
+    </div>
+  </div>
 
   <script>
-    // fetch and inject your .txt
-    fetch('/doublebracket.txt')
-      .then(r => r.text())
-      .then(txt => {
-        document.getElementById('text-content').textContent = txt;
-      })
-      .catch(() => {
-        document.getElementById('text-content').textContent =
-          '⚠️ Failed to load content.';
-      });
+    // Function to generate twinkling stars
+    function generateStars() {
+      const numStars = 100;
+      
+      // Clear existing stars
+      const existingStars = document.querySelectorAll('.star');
+      existingStars.forEach(star => star.remove());
+      
+      for (let i = 0; i < numStars; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Random position across viewport
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        
+        // Random size (1-3px)
+        const size = Math.random() * 2 + 1;
+        
+        // Random animation delay for varied twinkling
+        const delay = Math.random() * 2;
+        
+        star.style.left = `${x}px`;
+        star.style.top = `${y}px`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.animationDelay = `${delay}s`;
+        star.style.zIndex = '0';
+        
+        document.body.appendChild(star);
+      }
+    }
+
+
+    // Function to update icon based on color scheme
+    function updateIcon() {
+      const lightIcon = document.getElementById('light-icon');
+      const darkIcon = document.getElementById('dark-icon');
+      
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        lightIcon.style.display = 'none';
+        darkIcon.style.display = 'block';
+      } else {
+        lightIcon.style.display = 'block';
+        darkIcon.style.display = 'none';
+      }
+    }
+
+    // Initialize everything
+    updateIcon();
+    generateStars();
+
+    // Listen for changes in color scheme preference
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateIcon);
+
+    // Regenerate stars on window resize
+    window.addEventListener('resize', generateStars);
   </script>
 </body>
 </html>
